@@ -1,0 +1,15 @@
+*.opsi
+*.bak
+*.exe
+*.lst
+*.txt
+*.png
+opsicheck*.sh
+wget*.sh
+*.md5
+*.zsync
+*.version
+*~
+TMP/*
+.gitignore
+

@@ -1,0 +1,120 @@
+; ----------------------------------------------------------------
+; Copyright (c) uib gmbh (www.uib.de)
+; This sourcecode is owned by uib
+; and published under the Terms of the General Public License.
+; credits: http://www.opsi.org/en/credits/
+; ----------------------------------------------------------------
+; SETUPTYPE      nsis
+; PRODUCTID      qnap-qfinderpro
+; SETUPFILE      QNAPQfinderProWindows-6.4.0.1220.exe
+; LICENSE        false     
+; PRODUCTDESC    Mit Qfinder Pro (erhältlich für Windows, Mac und Ubuntu), können Sie sämtliche QNAP NAS in einem LAN schnell aufspüren und darauf zugreifen. Die Windows-Version bietet eine "Speicher anschließen und verbinden" Funktionalität, mit der das QNAP NAS als PC-Netzwerklaufwerk oder virtuelle Festplatte für eine komfortable Datenspeicherung genutzt werden kann. Sie können auch die Funktion "Medienupload" verwenden, um NAS-Systemressourcen zu sparen, indem Sie die Transkodierung von Mediendateien auf Ihrem lokalen PC durchführen, bevor Sie sie auf das NAS hochladen. 
+; PRODUCTNAME    QNAP QfinderPro
+; PRODUCTSIZE    218 MB
+; PRODUCTVER     6.4.0.1220
+; SETUPSCRIPT    setup.opsiscript
+; UNINSSCRIPT    uninstall.opsiscript
+; INSTALLDIR     %ProgramFiles32Dir%\QNAP\Qfinder
+; TIMESTAMP      23/01/2018 08:53:49
+;****************************************
+
+[Actions]
+requiredWinstVersion >= "4.11.4.4"
+ScriptErrorMessages = false
+
+DefVar $SetupType$
+DefVar $ProductId$ 
+DefVar $ProductName$
+
+DefVar $Setupfile$ 
+DefVar $InstallDir$
+DefVar $PathToExe$
+DefVar $MinimumSpace$
+DefVar $ExitCode$
+DefVar $ErrorMsg$
+
+DefVar $MsiId$
+DefVar $NsisInstallBatch$
+DefVar $LogDir$
+
+Set $LogDir$ = "%opsiLogDir%"
+include_append "%ScriptPath%\check_nsis_exitcode.opsiscript"
+
+; ----------------------------------------------------------------
+Set $SetupType$		= "nsis"
+Set $ProductId$		= "qnap-qfinderpro"
+Set $ProductName$	= "QNAP QfinderPro"
+Set $SetupFile$		= "QNAPQfinderProWindows-6.4.0.1220.exe"
+Set $InstallDir$	= "%ProgramFiles32Dir%\QNAP\Qfinder"
+Set $PathToExe$       = $InstallDir$ + "\QfinderPro.exe"
+DefVar  $SetupVersion$
+Set $SetupVersion$      = takeString(0, splitString("%installingProdVersion%","-"))
+Set $SetupFile$         = "QNAPQfinderProWindows-" + $SetupVersion$ + ".exe"
+; ----------------------------------------------------------------
+
+ChangeDirectory "%SCRIPTPATH%"
+
+Set $MinimumSpace$    = GetProductProperty("minimumspace","218 MB")
+if not(HasMinimumSpace ("%SystemDrive%", $MinimumSpace$))
+	LogError "Not enough space on %SystemDrive%, " + $MinimumSpace$ + " on drive %SystemDrive% needed for " + $ProductId$
+	isFatalError "No Space!""
+else
+	comment "Space OK"
+endif
+if not(FileExists($Setupfile$))
+	LogError "Setupfile NOT exists (" + $Setupfile$ +")"
+	isFatalError "No Setupfile!"
+else
+	comment "Setupfile OK (exists)"
+endif
+; if GetSystemType = "64 Bit System" AND GetOS = "Windows_NT"
+;       comment "Win64Bit= ok"
+; else
+;       LogError "32 Bit or Linux is not supported for " + $ProductId$
+;       isFatalError "Win64Bit only!"
+; endif
+
+comment "Show product picture"
+if (FileExists("%ScriptPath%\..\lib\icons\%installingProdName%.png"))
+	comment "logo at local library/icons found."
+        ShowBitmap "%ScriptPath%\..\lib\icons\%installingProdName%.png" $ProductName$
+else
+        comment "no logo at local library/icons, use from ScriptPath ..."
+        ShowBitmap "%ScriptPath%\o4i.png" $ProductName$
+endif
+
+if FileExists("%ScriptPath%\delsub.opsiscript")
+	comment "Start uninstall sub section"
+	Sub "%ScriptPath%\delsub.opsiscript"
+else
+	LogWarning "no DelSub!"
+endif
+   
+Message "installing (new) %installingProdName%(%installingProdVersion%) ..."
+   
+if ($SetupType$ = "nsis")
+	Set $NsisInstallBatch$ = "%ScriptPath%\" + $Setupfile$ + " /S"
+	if not ($InstallDir$ = '')
+		Set $NsisInstallBatch$ = $NsisInstallBatch$ + ' /D="' + $InstallDir$ + '"'
+	endif
+endif
+   
+comment "Start setup program"
+Winbatch_install_nsis
+Sub_check_exitcode	
+
+comment "include custom post install file"
+DefVar $CustomPostInstall$
+set $CustomPostInstall$ = getProductProperty("custom-post-install","none")
+if not ($CustomPostInstall$ = "none")
+        if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
+                include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+        endif
+endif
+
+; ----------------------------------------------------------------
+; install section
+; ----------------------------------------------------------------
+[Winbatch_install_nsis]
+;NSIS Nullsoft Scriptable Install System 
+$NsisInstallBatch$

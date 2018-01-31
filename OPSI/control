@@ -1,0 +1,75 @@
+[Package]
+version: 1
+depends: 
+incremental: False
+
+[Product]
+type: localboot
+id: dfn_qnap-qfinderpro
+name: QNAP QfinderPro
+description: Mit Qfinder Pro (erhältlich für Windows, Mac und Ubuntu), können Sie sämtliche QNAP NAS in einem LAN schnell aufspüren und darauf zugreifen. Die Windows-Version bietet eine "Speicher anschließen und verbinden" Funktionalität, mit der das QNAP NAS als PC-Netzwerklaufwerk oder virtuelle Festplatte für eine komfortable Datenspeicherung genutzt werden kann. Sie können auch die Funktion "Medienupload" verwenden, um NAS-Systemressourcen zu sparen, indem Sie die Transkodierung von Mediendateien auf Ihrem lokalen PC durchführen, bevor Sie sie auf das NAS hochladen.
+advice: 
+version: 6.4.0.1220
+priority: 0
+licenseRequired: False
+productClasses: 
+setupScript: setup.opsiscript
+uninstallScript: uninstall.opsiscript
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: 
+
+[ProductProperty]
+type: bool
+name: alluserdesktoplink
+description: Link auf AllUserDesktop erzeugen
+default: False
+
+[ProductProperty]
+type: unicode
+name: minimumspace
+multivalue: False
+editable: True
+description: required hdd space for installation
+values: ["250 MB"]
+default: ["250 MB"]
+
+[ProductProperty]
+type: unicode
+name: desktopicon
+multivalue: False
+editable: False
+description: Icon on Desktop
+values: ["no", "yes"]
+default: ["no"]
+
+[ProductProperty]
+type: unicode
+name: custom-post-install
+multivalue: False
+editable: False
+description: Define filename for include script in custom directory after installation
+values: ["none", "post-install.opsiinc"]
+default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: custom-post-deinstall
+multivalue: False
+editable: False
+description: Define filename for include script in custom directory after deinstallation
+values: ["none", "post-deinstall.opsiinc"]
+default: ["none"]
+
+[Changelog]
+qnap-qfinderpro (6.4.0.1220-001) stable; urgency=low
+
+	* o4i logo 8/2016
+	* initial: created by opsi-setup-detector with
+	  modified templates
+	* Modifications for CustemDir
+	* Property 'DesktopIcon' fehlt noch
+
+ -- Detlef Krummel <opsi4institus@gei.de>  23/01/2018 08:53:49
