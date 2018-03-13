@@ -103,6 +103,7 @@ comment "Start setup program"
 Winbatch_install_nsis
 Sub_check_exitcode	
 
+
 comment "include custom post install file"
 DefVar $CustomPostInstall$
 set $CustomPostInstall$ = getProductProperty("custom-post-install","none")

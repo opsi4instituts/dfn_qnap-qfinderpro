@@ -9,7 +9,7 @@ id: dfn_qnap-qfinderpro
 name: QNAP QfinderPro
 description: Mit Qfinder Pro (erhältlich für Windows, Mac und Ubuntu), können Sie sämtliche QNAP NAS in einem LAN schnell aufspüren und darauf zugreifen. Die Windows-Version bietet eine "Speicher anschließen und verbinden" Funktionalität, mit der das QNAP NAS als PC-Netzwerklaufwerk oder virtuelle Festplatte für eine komfortable Datenspeicherung genutzt werden kann. Sie können auch die Funktion "Medienupload" verwenden, um NAS-Systemressourcen zu sparen, indem Sie die Transkodierung von Mediendateien auf Ihrem lokalen PC durchführen, bevor Sie sie auf das NAS hochladen.
 advice: 
-version: 6.4.0.1220
+version: 6.4.1.0206
 priority: 0
 licenseRequired: False
 productClasses: 
@@ -64,12 +64,16 @@ values: ["none", "post-deinstall.opsiinc"]
 default: ["none"]
 
 [Changelog]
-qnap-qfinderpro (6.4.0.1220-001) stable; urgency=low
+qnap-qfinderpro (6.4.1.0206-002) stable; urgency=low
 
+	* minory update, only .exe changed
+
+ -- Detlef Krummel <opsi4institus@gei.de>  13/03/2018
+
+qnap-qfinderpro (6.4.0.1220-001) stable; urgency=low
 	* o4i logo 8/2016
 	* initial: created by opsi-setup-detector with
 	  modified templates
 	* Modifications for CustemDir
 	* Property 'DesktopIcon' fehlt noch
-
  -- Detlef Krummel <opsi4institus@gei.de>  23/01/2018 08:53:49
